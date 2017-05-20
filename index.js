@@ -22,7 +22,7 @@ module.exports = class NfcpyId extends EventEmitter {
         });
 
         pyshell.end((err) => {
-          this.emit('err', err);
+          this.emit('error', err);
         });
 
         process.on('SIGHUP', () => {killProcess(pyshell)});

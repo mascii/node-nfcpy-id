@@ -25,9 +25,4 @@ class CardReader():
 if __name__ == '__main__':
     cr = CardReader()
     while True:
-        try:
-            cr.read_id()
-        except:
-            sys.stderr.write(str(sys.exc_info()[0]))
-            sys.stderr.flush()
-            os._exit(0)
+        cr.read_id()
