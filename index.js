@@ -11,7 +11,7 @@ module.exports = class NfcpyId extends EventEmitter {
     constructor(options) {
         super();
         const scriptFile = 'scriptFile' in (options || {}) ?
-                                options.scriptFileName : 'reader.py';
+                                options.scriptFile : 'reader.py';
         const scriptPath = 'scriptPath' in (options || {}) ?
                                 options.scriptPath : __dirname;
         const pyshell = new PythonShell(scriptFile, {scriptPath}, {mode: 'JSON'});
