@@ -1,0 +1,14 @@
+{
+  "name": "node-nfcpy-id",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "masaki koyanagi",
+  "license": "ISC",
+  "dependencies": {
+    "python-shell": "^0.4.0"
+  }
+}
