@@ -3,10 +3,6 @@
 const EventEmitter = require('events').EventEmitter;
 const PythonShell = require('python-shell');
 
-const killProcess = (pyshell) => {
-  pyshell.childProcess.kill('SIGHUP');
-}
-
 module.exports = class NfcpyId extends EventEmitter {
     constructor(options) {
         super();
@@ -25,7 +21,10 @@ module.exports = class NfcpyId extends EventEmitter {
           this.emit('error', err);
         });
 
-        process.on('SIGHUP', () => {killProcess(pyshell)});
-        process.on('SIGINT', () => {killProcess(pyshell)});
+        ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
+          process.on(event, () => {
+            pyshell.childProcess.kill('SIGHUP');
+          });
+        });
     }
 }
