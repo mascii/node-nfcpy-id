@@ -3,7 +3,7 @@
 const EventEmitter = require('events').EventEmitter;
 const PythonShell = require('python-shell');
 
-module.exports = class NfcpyId extends EventEmitter {
+module.exports = class extends EventEmitter {
     constructor(options) {
         super();
         const scriptFile = 'scriptFile' in (options || {}) ?
