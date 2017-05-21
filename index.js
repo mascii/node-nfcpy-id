@@ -7,10 +7,16 @@ module.exports = class extends EventEmitter {
     constructor(options) {
       super();
       this.options = options;
-      this.start();
+      this.running = false;
+      return this;
     }
 
     start() {
+      if (this.running) {
+        return this;
+      }
+      this.running = true;
+
       const scriptFile = 'scriptFile' in (this.options || {}) ?
                               this.options.scriptFile : 'reader.py';
       const scriptPath = 'scriptPath' in (this.options || {}) ?
@@ -31,9 +37,17 @@ module.exports = class extends EventEmitter {
           this.stop();
         });
       });
+
+      return this;
     }
 
     stop() {
+      if (!this.running) {
+        return this;
+      }
+      this.running = false;
+
       this.pyshell.childProcess.kill('SIGHUP');
+      return this;
     }
 }
