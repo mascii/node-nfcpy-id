@@ -8,6 +8,13 @@ module.exports = class extends EventEmitter {
       super();
       this.options = options;
       this.running = false;
+
+      ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
+        process.on(event, () => {
+          this.stop();
+        });
+      });
+
       return this;
     }
 
@@ -32,12 +39,6 @@ module.exports = class extends EventEmitter {
 
       this.pyshell.end((err) => {
         this.emit('error', err);
-      });
-
-      ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
-        process.on(event, () => {
-          this.stop();
-        });
       });
 
       return this;
