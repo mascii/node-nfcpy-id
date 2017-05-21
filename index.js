@@ -24,8 +24,10 @@ module.exports = class extends EventEmitter {
       this.pyshell = new PythonShell(scriptFile, {scriptPath}, {mode: 'JSON'});
 
       this.pyshell.stdout.on('data', (json) => {
-        const data = JSON.parse(json.split('\n')[0]);
-        this.emit(data.event, data);
+        if (this.running) {
+          const data = JSON.parse(json.split('\n')[0]);
+          this.emit(data.event, data);
+        }
       });
 
       this.pyshell.end((err) => {
