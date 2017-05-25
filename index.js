@@ -18,8 +18,12 @@ module.exports = class extends EventEmitter {
       return this;
     }
 
+    get isRunning() {
+      return this._running;
+    }
+
     start() {
-      if (this._running) {
+      if (this.isRunning) {
         return this;
       }
       this._running = true;
@@ -31,7 +35,7 @@ module.exports = class extends EventEmitter {
       this.pyshell = new PythonShell(scriptFile, {scriptPath}, {mode: 'JSON'});
 
       this.pyshell.stdout.on('data', (json) => {
-        if (this._running) {
+        if (this.isRunning) {
           const data = JSON.parse(json.split('\n')[0]);
           this.emit(data.event, data);
         }
@@ -45,7 +49,7 @@ module.exports = class extends EventEmitter {
     }
 
     stop() {
-      if (!this._running) {
+      if (!this.isRunning) {
         return this;
       }
       this._running = false;
