@@ -7,7 +7,7 @@ module.exports = class extends EventEmitter {
     constructor(options) {
       super();
       this.options = options;
-      this.running = false;
+      this._running = false;
 
       ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
         process.on(event, () => {
@@ -19,10 +19,10 @@ module.exports = class extends EventEmitter {
     }
 
     start() {
-      if (this.running) {
+      if (this._running) {
         return this;
       }
-      this.running = true;
+      this._running = true;
 
       const scriptFile = 'scriptFile' in (this.options || {}) ?
                               this.options.scriptFile : 'reader.py';
@@ -31,7 +31,7 @@ module.exports = class extends EventEmitter {
       this.pyshell = new PythonShell(scriptFile, {scriptPath}, {mode: 'JSON'});
 
       this.pyshell.stdout.on('data', (json) => {
-        if (this.running) {
+        if (this._running) {
           const data = JSON.parse(json.split('\n')[0]);
           this.emit(data.event, data);
         }
@@ -45,10 +45,10 @@ module.exports = class extends EventEmitter {
     }
 
     stop() {
-      if (!this.running) {
+      if (!this._running) {
         return this;
       }
-      this.running = false;
+      this._running = false;
 
       this.pyshell.childProcess.kill('SIGHUP');
       return this;
