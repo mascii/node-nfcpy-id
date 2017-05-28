@@ -9,7 +9,7 @@ def sig_handler(signo, frame):
 sig_handler.running = True
 signal.signal(signal.SIGCHLD, sig_handler)
 
-def stdoutJSON(data):
+def stdout_json(data):
     sys.stdout.write(json.dumps(data))
     sys.stdout.write('\n')
     sys.stdout.flush()
@@ -18,7 +18,7 @@ def on_connect(tag):
     identifier = binascii.hexlify(tag.identifier)
     match = re.findall(r'[0-9]', tag.type)
     type = int(match[0] if match else 0)
-    stdoutJSON({'event':'touchstart', 'id':identifier, 'type':type})
+    stdout_json({'event':'touchstart', 'id':identifier, 'type':type})
     return True
 
 def read_id():
@@ -27,7 +27,7 @@ def read_id():
         try:
             clf.connect(rdwr={'on-connect':on_connect})
         finally:
-            stdoutJSON({'event':'touchend'})
+            stdout_json({'event':'touchend'})
             clf.close()
     else:
         time.sleep(0.1)
