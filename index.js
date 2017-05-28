@@ -6,7 +6,7 @@ const PythonShell = require('python-shell');
 module.exports = class extends EventEmitter {
     constructor(options) {
       super();
-      this.options = options;
+      this._options = options;
       this._running = false;
       this._firstLaunch = false;
       return this;
@@ -17,10 +17,10 @@ module.exports = class extends EventEmitter {
     }
 
     once() {
-      const scriptFile = 'scriptFile' in (this.options || {}) ?
-                              this.options.scriptFile : 'reader.py';
-      const scriptPath = 'scriptPath' in (this.options || {}) ?
-                              this.options.scriptPath : __dirname;
+      const scriptFile = 'scriptFile' in (this._options || {}) ?
+                              this._options.scriptFile : 'reader.py';
+      const scriptPath = 'scriptPath' in (this._options || {}) ?
+                              this._options.scriptPath : __dirname;
       this.pyshell = new PythonShell(scriptFile, {scriptPath}, {mode: 'JSON'});
 
       this.pyshell.stdout.on('data', (json) => {
