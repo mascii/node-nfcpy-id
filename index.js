@@ -58,7 +58,7 @@ module.exports = class extends EventEmitter {
       return this;
     }
 
-    stop() {
+    pause() {
       if (!this.isRunning) {
         return this;
       }
