@@ -1,13 +1,25 @@
 import os, sys, signal, time, json, re, binascii
 import nfc
 
-def sig_handler(signo, frame):
-    sig_handler.running ^= True
-    if not(sig_handler.running) and read_id.connecting:
+running = True
+exiting = False
+
+def sig_hup_handler(signo, frame):
+    global running
+    global exiting
+    if running:
+        running = False
+        os.kill(os.getpid(), signal.SIGINT)
+    exiting = True
+
+def sig_chld_handler(signo, frame):
+    global running
+    running ^= True
+    if not(running):
         os.kill(os.getpid(), signal.SIGINT)
 
-sig_handler.running = True
-signal.signal(signal.SIGCHLD, sig_handler)
+signal.signal(signal.SIGHUP, sig_hup_handler)
+signal.signal(signal.SIGCHLD, sig_chld_handler)
 
 def stdout_json(data):
     sys.stdout.write(json.dumps(data))
@@ -21,21 +33,13 @@ def on_connect(tag):
     stdout_json({'event':'touchstart', 'id':identifier, 'type':type})
     return True
 
-def read_id():
-    if sig_handler.running:
-        clf = nfc.ContactlessFrontend('usb')
-        try:
-            read_id.connecting = True
-            clf.connect(rdwr={'on-connect':on_connect})
-        finally:
-            read_id.connecting = False
-            stdout_json({'event':'touchend'})
-            clf.close()
-    else:
-        time.sleep(0.1)
-
-read_id.connecting = False
-
 if __name__ == '__main__':
     while True:
-        read_id()
+        if running:
+            with nfc.ContactlessFrontend('usb') as clf:
+                while clf.connect(rdwr={'on-connect': on_connect}):
+                    stdout_json({'event':'touchend'})
+        elif not(exiting):
+            time.sleep(0.1)
+        else:
+            break
