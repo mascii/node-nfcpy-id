@@ -8,6 +8,7 @@ module.exports = class extends EventEmitter {
       super();
       this._options = options;
       this._running = false;
+      this._exiting = false;
       this._firstLaunch = false;
       return this;
     }
@@ -31,13 +32,16 @@ module.exports = class extends EventEmitter {
       });
 
       this.pyshell.end((err) => {
-        this._running = false;
-        this._firstLaunch = false;
-        this.emit('error', err);
+        if (!this._exiting) {
+          this._running = false;
+          this._firstLaunch = false;
+          this.emit('error', err);
+        }
       });
 
       ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
         process.on(event, () => {
+          this._exiting = true;
           this.sendSignal('SIGHUP');
         });
       });
