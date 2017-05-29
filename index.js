@@ -32,6 +32,7 @@ module.exports = class extends EventEmitter {
 
       this.pyshell.end((err) => {
         this._running = false;
+        this._firstLaunch = false;
         this.emit('error', err);
       });
 
