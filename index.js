@@ -53,7 +53,7 @@ module.exports = class extends EventEmitter {
         this.once();
         this._firstLaunch = true;
       } else {
-        this.sendSignalForHandler();
+        this.sendSignal('SIGCHLD');
       }
 
       return this;
@@ -64,15 +64,11 @@ module.exports = class extends EventEmitter {
         return this;
       }
       this._running = false;
-      this.sendSignalForHandler();
+      this.sendSignal('SIGCHLD');
       return this;
     }
 
     sendSignal(signal) {
       this.pyshell.childProcess.kill(signal);
-    }
-
-    sendSignalForHandler() {
-      this.sendSignal('SIGCHLD');
     }
 }
