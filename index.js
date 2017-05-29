@@ -38,7 +38,7 @@ module.exports = class extends EventEmitter {
 
       ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
         process.on(event, () => {
-          this.sendSignal();
+          this.sendSignal('SIGHUP');
         });
       });
     }
