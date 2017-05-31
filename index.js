@@ -7,9 +7,22 @@ module.exports = class extends EventEmitter {
     constructor(options) {
       super();
       this._options = options;
+      this._mode = 'mode' in (options || {}) ? options.mode : 'loop';
       this._running = false;
       this._exiting = false;
       this._firstLaunch = false;
+
+      if (this._mode === 'non-loop') {
+        this._loop = false;
+        this._non_touchend = false;
+      } else if (this._mode === 'non-touchend') {
+        this._loop = false;
+        this._non_touchend = true;
+      } else {
+        this._loop = true;
+        this._non_touchend = false;
+      }
+
       return this;
     }
 
@@ -22,11 +35,13 @@ module.exports = class extends EventEmitter {
                               this._options.scriptFile : 'reader.py';
       const scriptPath = 'scriptPath' in (this._options || {}) ?
                               this._options.scriptPath : __dirname;
-      this.pyshell = new PythonShell(scriptFile, {scriptPath}, {mode: 'JSON'});
+      const args = [this._mode];
+      this.pyshell = new PythonShell(scriptFile, {scriptPath, args}, {mode: 'JSON'});
 
       this.pyshell.stdout.on('data', (json) => {
         if (this.isRunning) {
           const data = JSON.parse(json.split('\n')[0]);
+          this._running = this._loop || !this._non_touchend && !(data.event === 'touchend');
           this.emit(data.event, data);
         }
       });

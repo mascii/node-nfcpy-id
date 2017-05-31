@@ -1,6 +1,9 @@
 import os, sys, signal, time, json, re, binascii
 import nfc
 
+non_touchend = ('non-touchend' in sys.argv)
+non_loop = ('non-loop' in sys.argv) or non_touchend
+
 running = True
 exiting = False
 
@@ -31,7 +34,7 @@ def on_connect(tag):
     match = re.findall(r'[0-9]', tag.type)
     type = int(match[0] if match else 0)
     stdout_json({'event':'touchstart', 'id':identifier, 'type':type})
-    return True
+    return not(non_touchend)
 
 if __name__ == '__main__':
     while True:
@@ -39,6 +42,9 @@ if __name__ == '__main__':
             with nfc.ContactlessFrontend('usb') as clf:
                 while clf.connect(rdwr={'on-connect': on_connect}):
                     stdout_json({'event':'touchend'})
+                    if non_loop:
+                        running = False
+                        break
         elif not(exiting):
             time.sleep(0.1)
         else:
