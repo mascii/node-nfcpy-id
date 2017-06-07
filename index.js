@@ -23,6 +23,16 @@ module.exports = class extends EventEmitter {
         this._non_touchend = false;
       }
 
+      ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
+        process.on(event, () => {
+          if (this._firstLaunch) {
+            this._exiting = true;
+            this.sendSignal('SIGHUP');
+            console.log("aaaaaa");
+          }
+        });
+      });
+
       return this;
     }
 
@@ -52,15 +62,6 @@ module.exports = class extends EventEmitter {
           this._firstLaunch = false;
           this.emit('error', err);
         }
-      });
-
-      ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
-        process.on(event, () => {
-          if (!this._exiting) {
-            this._exiting = true;
-            this.sendSignal('SIGHUP');
-          }
-        });
       });
     }
 
