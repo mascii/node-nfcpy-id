@@ -21,7 +21,7 @@ module.exports = class extends EventEmitter {
       this._non_touchend = false;
     }
 
-    ['SIGHUP', 'SIGINT', 'exit'].forEach((event) => {
+    ['SIGHUP', 'SIGINT', 'SIGTERM', 'exit'].forEach((event) => {
       process.on(event, () => {
         if (this._firstLaunch) {
           this._exiting = true;
