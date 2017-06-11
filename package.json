@@ -1,6 +1,6 @@
 {
   "name": "node-nfcpy-id",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Read the ID of an NFC Tag with nfcpy",
   "main": "index.js",
   "scripts": {
