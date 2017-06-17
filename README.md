@@ -2,6 +2,8 @@
 
 Read the card ID (Mifare: UID, FeliCa: IDm) with [nfcpy](https://github.com/nfcpy/nfcpy/) (a Python module).
 
+[The details of this package (Japanese page)](http://qiita.com/mascii/items/ec79ad5a7026f771d181)
+
 ## Requirement
 ### Node version
   - v6.10.2 or later
