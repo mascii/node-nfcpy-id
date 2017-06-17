@@ -25,7 +25,7 @@ module.exports = class extends EventEmitter {
       process.once(event, () => {
         if (this._firstLaunch) {
           this._exiting = true;
-          this.sendSignal('SIGHUP');
+          this._sendSignal('SIGHUP');
         }
       });
     });
@@ -37,7 +37,7 @@ module.exports = class extends EventEmitter {
     return this._running;
   }
 
-  once() {
+  _once() {
     const scriptFile = 'scriptFile' in (this._options || {}) ?
                             this._options.scriptFile : 'reader.py';
     const scriptPath = 'scriptPath' in (this._options || {}) ?
@@ -62,6 +62,10 @@ module.exports = class extends EventEmitter {
     });
   }
 
+  _sendSignal(signal) {
+    this.pyshell.childProcess.kill(signal);
+  }
+
   start() {
     if (this.isRunning) {
       return this;
@@ -69,10 +73,10 @@ module.exports = class extends EventEmitter {
     this._running = true;
 
     if (!this._firstLaunch) {
-      this.once();
+      this._once();
       this._firstLaunch = true;
     } else {
-      this.sendSignal('SIGCHLD');
+      this._sendSignal('SIGCHLD');
     }
 
     return this;
@@ -83,11 +87,7 @@ module.exports = class extends EventEmitter {
       return this;
     }
     this._running = false;
-    this.sendSignal('SIGCHLD');
+    this._sendSignal('SIGCHLD');
     return this;
-  }
-
-  sendSignal(signal) {
-    this.pyshell.childProcess.kill(signal);
   }
 };
