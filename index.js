@@ -12,13 +12,13 @@ module.exports = class extends EventEmitter {
 
     if (this._mode === 'non-loop') {
       this._loop = false;
-      this._non_touchend = false;
+      this._nonTouchend = false;
     } else if (this._mode === 'non-touchend') {
       this._loop = false;
-      this._non_touchend = true;
+      this._nonTouchend = true;
     } else {
       this._loop = true;
-      this._non_touchend = false;
+      this._nonTouchend = false;
     }
 
     ['SIGHUP', 'SIGINT', 'SIGTERM', 'exit'].forEach((event) => {
@@ -47,7 +47,7 @@ module.exports = class extends EventEmitter {
     this.pyshell.stdout.on('data', (json) => {
       if (this.isRunning) {
         const data = JSON.parse(json.split('\n')[0]);
-        this._running = this._loop || (!this._non_touchend && !(data.event === 'touchend'));
+        this._running = this._loop || (!this._nonTouchend && !(data.event === 'touchend'));
         this.emit(data.event, data);
       }
     });
