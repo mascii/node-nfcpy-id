@@ -1,7 +1,7 @@
-const EventEmitter = require('events').EventEmitter;
-const PythonShell = require('python-shell');
+import { EventEmitter } from 'events';
+import PythonShell from 'python-shell';
 
-module.exports = class extends EventEmitter {
+export default class NodeNfcpyId extends EventEmitter {
   constructor(options) {
     super();
     this._options = options;
@@ -89,4 +89,4 @@ module.exports = class extends EventEmitter {
     this._sendSignal('SIGCHLD');
     return this;
   }
-};
+}
