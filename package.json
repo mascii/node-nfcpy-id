@@ -3,6 +3,7 @@
   "version": "0.0.8",
   "description": "Read the ID of an NFC Tag with nfcpy",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
     "lint": "eslint ./src",
@@ -26,6 +27,7 @@
     ]
   },
   "dependencies": {
+    "@types/node": "^8.0.14",
     "python-shell": "^0.4.0"
   },
   "devDependencies": {
