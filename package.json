@@ -2,9 +2,11 @@
   "name": "node-nfcpy-id",
   "version": "0.0.8",
   "description": "Read the ID of an NFC Tag with nfcpy",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
-    "lint": "eslint ./"
+    "build": "babel ./src --out-dir ./lib",
+    "lint": "eslint ./src",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,11 @@
   ],
   "author": "masaki koyanagi",
   "license": "ISC",
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
   "dependencies": {
     "python-shell": "^0.4.0"
   },
