@@ -4,6 +4,13 @@ Read the card ID (Mifare: UID, FeliCa: IDm) with [nfcpy](https://github.com/nfcp
 
 [The details of this package (Japanese page)](http://qiita.com/mascii/items/ec79ad5a7026f771d181)
 
+## Important notice
+
+**The method of importing(`require`-ing) this package in CommonJS has changed from version 0.0.9**
+```js
+const NfcpyId = require('node-nfcpy-id').default;
+```
+
 ## Requirement
 ### Node version
   - v6.10.2 or later
@@ -38,9 +45,7 @@ sudo reboot
 
 ### loop mode
 ```js
-'use strict';
-
-const NfcpyId = require('node-nfcpy-id');
+const NfcpyId = require('node-nfcpy-id').default;
 const nfc = new NfcpyId().start();
 
 nfc.on('touchstart', (card) => {
@@ -67,9 +72,7 @@ nfc.on('error', (err) => {
 
 ### non-loop mode
 ```js
-'use strict';
-
-const NfcpyId = require('node-nfcpy-id');
+const NfcpyId = require('node-nfcpy-id').default;
 const nfc = new NfcpyId({mode: 'non-loop'}).start();
 
 nfc.on('touchstart', (card) => {
@@ -96,9 +99,7 @@ nfc.on('error', (err) => {
 
 ### non-touchend mode
 ```js
-'use strict';
-
-const NfcpyId = require('node-nfcpy-id');
+const NfcpyId = require('node-nfcpy-id').default;
 const nfc = new NfcpyId({mode: 'non-touchend'}).start();
 
 nfc.on('touchstart', (card) => {
@@ -122,7 +123,7 @@ To stop this script, press control+C. By this, Python process will be killed at 
 To use this script with other than SONY Pasori RC-S380, it may be necessary to modify `reader.py` and add options to the parameter of constructor.
 
 ```js
-const NfcpyId = require('node-nfcpy-id');
+const NfcpyId = require('node-nfcpy-id').default;
 
 // Put the modified Python script in the same directory.
 const nfc = new NfcpyId({scriptPath: __dirname, scriptFile: 'new-reader.py'}).start();
