@@ -26,6 +26,16 @@
       "es2015"
     ]
   },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "rules": {
+      "no-underscore-dangle": 0
+    },
+    "env": {
+      "es6": true,
+      "node": true
+    }
+  },
   "dependencies": {
     "@types/node": "^8.0.14",
     "python-shell": "^0.4.0"
