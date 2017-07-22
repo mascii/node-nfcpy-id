@@ -42,7 +42,7 @@ export default class NodeNfcpyId extends EventEmitter {
                             this._options.scriptFile : 'reader.py';
     const scriptPath = 'scriptPath' in (this._options || {}) ?
                             this._options.scriptPath : __dirname;
-    this.pyshell = new PythonShell(scriptFile, { scriptPath, args: this._mode, mode: 'JSON' });
+    this.pyshell = new PythonShell(scriptFile, { scriptPath, args: this._mode, mode: 'text' });
 
     this.pyshell.stdout.on('data', (json) => {
       if (this.isRunning) {
