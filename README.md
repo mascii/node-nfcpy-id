@@ -30,7 +30,7 @@ npm install node-nfcpy-id
 ## Settings for Raspbian with SONY Pasori RC-S380
 ```
 sudo apt-get install python-usb python-pip -y
-sudo pip install -U nfcpy
+sudo pip install -U nfcpy-id-reader
 cat << EOF | sudo tee /etc/udev/rules.d/nfcdev.rules
 SUBSYSTEM=="usb", ACTION=="add", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="06c3", GROUP="plugdev"
 EOF
