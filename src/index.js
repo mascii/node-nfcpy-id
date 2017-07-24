@@ -38,11 +38,17 @@ export default class NodeNfcpyId extends EventEmitter {
   }
 
   _once() {
-    const scriptFile = 'scriptFile' in (this._options || {}) ?
-                            this._options.scriptFile : 'reader.py';
-    const scriptPath = 'scriptPath' in (this._options || {}) ?
-                            this._options.scriptPath : __dirname;
-    this.pyshell = new PythonShell(scriptFile, { scriptPath, args: this._mode, mode: 'text' });
+    if (('scriptFile' in (this._options || {})) || ('scriptPath' in (this._options || {}))) {
+      const scriptFile = 'scriptFile' in (this._options || {}) ?
+                                this._options.scriptFile : 'reader.py';
+      const scriptPath = 'scriptPath' in (this._options || {}) ?
+                                this._options.scriptPath : __dirname;
+      const options = { scriptPath, args: this._mode, mode: 'text' };
+      this.pyshell = new PythonShell(scriptFile, options);
+    } else {
+      const options = { pythonOptions: ['-m'], args: this._mode, mode: 'text' };
+      this.pyshell = new PythonShell('nfcpy_id_reader', options);
+    }
 
     this.pyshell.stdout.on('data', (json) => {
       if (this.isRunning) {
