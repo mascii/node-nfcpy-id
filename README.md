@@ -11,6 +11,8 @@ Read the card ID (Mifare: UID, FeliCa: IDm) with [nfcpy](https://github.com/nfcp
 const NfcpyId = require('node-nfcpy-id').default;
 ```
 
+**License changed from ISC to MIT**
+
 ## Requirement
 ### Node version
   - v6.10.2 or later
@@ -131,3 +133,6 @@ const nfc = new NfcpyId({scriptPath: __dirname, scriptFile: 'new-reader.py'}).st
 // If the file name of the modified Python script is `reader.py`, `scriptFile` can be omitted.
 // const nfc = new NfcpyId({scriptPath: __dirname}).start();
 ```
+
+## License
+MIT

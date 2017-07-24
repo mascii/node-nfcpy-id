@@ -20,7 +20,7 @@
     "raspbian"
   ],
   "author": "masaki koyanagi",
-  "license": "ISC",
+  "license": "MIT",
   "babel": {
     "presets": [
       "es2015"
