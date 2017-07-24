@@ -122,7 +122,7 @@ To pause reading cards, use `nfc.pause()`.
 
 To stop this script, press control+C. By this, Python process will be killed at the same time.
 
-To use this script with other than SONY Pasori RC-S380, it may be necessary to modify `reader.py` and add options to the parameter of constructor.
+To use this script with other than SONY Pasori RC-S380, it may be necessary to modify [`reader.py`](https://github.com/mascii/nfcpy_id_reader/blob/master/nfcpy_id_reader/__main__.py) and add options to the parameter of constructor.
 
 ```js
 const NfcpyId = require('node-nfcpy-id').default;
